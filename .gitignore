@@ -1,0 +1,13 @@
+# Dependências
+node_modules/
+
+# Build de produção
+dist/
+
+# Logs e arquivos do sistema
+*.log
+.DS_Store
+.system_generated/
+
+# Cobertura de testes
+coverage/
