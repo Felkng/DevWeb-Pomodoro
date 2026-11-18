@@ -8,6 +8,7 @@ interface PropriedadesTemporizadorView {
   readonly tempoRestanteSegundos: number;
   readonly sessaoFoiRetomada?: boolean;
   readonly onIniciar: () => void;
+  readonly onPersonalizarTempos?: () => void;
   readonly onPausar: () => void;
   readonly onRetomar: () => void;
   readonly onPularFase: () => void;
@@ -34,6 +35,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
   tempoRestanteSegundos,
   sessaoFoiRetomada = false,
   onIniciar,
+  onPersonalizarTempos,
   onPausar,
   onRetomar,
   onPularFase,
@@ -100,13 +102,24 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         {estadoMaquina === "ocioso" && (
-          <button
-            type="button"
-            onClick={onIniciar}
-            className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition"
-          >
-            Iniciar Sessão
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={onIniciar}
+              className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition"
+            >
+              Iniciar Sessão
+            </button>
+            {onPersonalizarTempos && (
+              <button
+                type="button"
+                onClick={onPersonalizarTempos}
+                className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 shadow-sm transition"
+              >
+                ⚙️ Personalizar Tempos
+              </button>
+            )}
+          </div>
         )}
 
         {estadoMaquina === "emExecucao" && (

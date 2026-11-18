@@ -23,15 +23,20 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
   return (
     <section aria-labelledby="titulo-presets" className="rounded-2xl bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-        <h2 id="titulo-presets" className="text-base font-bold text-slate-800">
-          Temporizadores Disponíveis
-        </h2>
+        <div>
+          <h2 id="titulo-presets" className="text-base font-bold text-slate-800">
+            Temporizadores Personalizados (Presets)
+          </h2>
+          <p className="text-xs text-slate-500">
+            Personalize a duração de foco, pausas e quantidade de ciclos
+          </p>
+        </div>
         <button
           type="button"
           onClick={onNovoPreset}
-          className="rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100"
+          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition"
         >
-          + Novo
+          + Novo Temporizador
         </button>
       </div>
 

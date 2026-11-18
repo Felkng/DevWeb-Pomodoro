@@ -353,6 +353,12 @@ export const App: React.FC = () => {
             sessao={sessaoDtoParaView}
             tempoRestanteSegundos={tempoRestanteSegundos}
             sessaoFoiRetomada={sessaoFoiRetomada}
+            onPersonalizarTempos={() => {
+              if (presetAtivo) {
+                setPresetEmEdicao(presetAtivo);
+                setModalPresetAberto(true);
+              }
+            }}
             onIniciar={() => {
               emissorAudio.desbloquearNoGestoDoUsuario();
               setSessaoFoiRetomada(false);
