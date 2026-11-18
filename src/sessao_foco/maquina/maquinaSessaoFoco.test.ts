@@ -103,4 +103,60 @@ describe("maquinaSessaoFoco (XState v5)", () => {
     expect(snapshot.context.sessao?.paraDto().faseAtual).toBe("pausaCurta");
     expect(alertaMock).toHaveBeenCalled();
   });
+
+  it("deve transicionar para concluido ao concluir a ultima fase (pausaLonga) sem loops", () => {
+    const alertaMock = vi.fn();
+    const ator = createActor(
+      maquinaSessaoFoco.provide({
+        actions: {
+          tocarAlertaSonoro: alertaMock,
+        },
+      })
+    );
+    ator.start();
+
+    // Preset com 1 ciclo
+    const presetUmCiclo: PresetDto = {
+      ...presetTeste,
+      ciclosAntesPausaLonga: 1,
+    };
+
+    ator.send({ type: "INICIAR", preset: presetUmCiclo, agora: 0 });
+    // Foco (25m) vence
+    ator.send({ type: "VERIFICAR_TICK", agora: 25 * 60 * 1000 + 1 });
+    expect(ator.getSnapshot().context.sessao?.paraDto().faseAtual).toBe("pausaLonga");
+    expect(alertaMock).toHaveBeenCalledTimes(1);
+
+    // Pausa longa (15m -> total 40m) vence
+    ator.send({ type: "VERIFICAR_TICK", agora: 40 * 60 * 1000 + 1 });
+    const snapshotConcluido = ator.getSnapshot();
+    expect(snapshotConcluido.value).toBe("concluido");
+    expect(snapshotConcluido.context.sessao?.paraDto().status).toBe("concluida");
+    expect(alertaMock).toHaveBeenCalledTimes(2);
+
+    // Ticks subsequentes não devem tocar áudio repetidamente
+    ator.send({ type: "VERIFICAR_TICK", agora: 41 * 60 * 1000 });
+    expect(alertaMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("deve transicionar para concluido ao pular a ultima fase (pausaLonga)", () => {
+    const ator = createActor(maquinaSessaoFoco);
+    ator.start();
+
+    const presetUmCiclo: PresetDto = {
+      ...presetTeste,
+      ciclosAntesPausaLonga: 1,
+    };
+
+    ator.send({ type: "INICIAR", preset: presetUmCiclo, agora: 0 });
+    // Pular foco -> vai para pausaLonga
+    ator.send({ type: "PULAR_FASE", agora: 1000 });
+    expect(ator.getSnapshot().context.sessao?.paraDto().faseAtual).toBe("pausaLonga");
+
+    // Pular pausaLonga -> conclui sessão (UC06 1a)
+    ator.send({ type: "PULAR_FASE", agora: 2000 });
+    const snapshot = ator.getSnapshot();
+    expect(snapshot.value).toBe("concluido");
+    expect(snapshot.context.sessao?.paraDto().status).toBe("concluida");
+  });
 });

@@ -81,6 +81,13 @@ export const maquinaSessaoFoco = setup({
     },
 
     emExecucao: {
+      always: [
+        {
+          guard: ({ context }) =>
+            context.sessao?.obterDados().estado.status === "concluida",
+          target: "concluido",
+        },
+      ],
       on: {
         PAUSAR: {
           target: "pausado",
@@ -133,6 +140,9 @@ export const maquinaSessaoFoco = setup({
               if (!context.sessao) {
                 return false;
               }
+              if (context.sessao.obterDados().estado.status === "concluida") {
+                return false;
+              }
               const fim = context.sessao.paraDto().fimFasePrevistoEm;
               return event.agora >= fim;
             },
@@ -156,6 +166,13 @@ export const maquinaSessaoFoco = setup({
     },
 
     pausado: {
+      always: [
+        {
+          guard: ({ context }) =>
+            context.sessao?.obterDados().estado.status === "concluida",
+          target: "concluido",
+        },
+      ],
       on: {
         RETOMAR: {
           target: "emExecucao",
