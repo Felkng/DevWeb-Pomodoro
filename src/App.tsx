@@ -72,12 +72,16 @@ export const App: React.FC = () => {
     })
   );
 
+  // Sessão Retomada (RF-12, RF-13, UC10, UC11)
+  const [sessaoFoiRetomada, setSessaoFoiRetomada] = useState(false);
+
   // Restaurar sessão persistida na montagem (RF-12, UC10)
   useEffect(() => {
     const sessaoPersistida = repositorioSessao.carregar(TimestampMs.deNumero(Date.now()));
     if (sessaoPersistida) {
       send({ type: "CARREGAR_PERSISTIDA", sessao: sessaoPersistida });
       setIdPresetSelecionado(sessaoPersistida.obterIdentidade().presetId);
+      setSessaoFoiRetomada(true);
     }
   }, [repositorioSessao, send]);
 
@@ -316,8 +320,10 @@ export const App: React.FC = () => {
             estadoMaquina={estadoVisual}
             sessao={sessaoDtoParaView}
             tempoRestanteSegundos={tempoRestanteSegundos}
+            sessaoFoiRetomada={sessaoFoiRetomada}
             onIniciar={() => {
               emissorAudio.desbloquearNoGestoDoUsuario();
+              setSessaoFoiRetomada(false);
               if (presetAtivo) {
                 send({ type: "INICIAR", preset: presetAtivo, agora: Date.now() });
               }
@@ -326,8 +332,14 @@ export const App: React.FC = () => {
             onRetomar={() => send({ type: "RETOMAR", agora: Date.now() })}
             onPularFase={() => send({ type: "PULAR_FASE", agora: Date.now() })}
             onReiniciarCiclos={() => send({ type: "REINICIAR_CICLOS", agora: Date.now() })}
-            onEncerrar={() => send({ type: "ENCERRAR" })}
-            onDescartar={() => send({ type: "DESCARTAR" })}
+            onEncerrar={() => {
+              setSessaoFoiRetomada(false);
+              send({ type: "ENCERRAR" });
+            }}
+            onDescartar={() => {
+              setSessaoFoiRetomada(false);
+              send({ type: "DESCARTAR" });
+            }}
           />
 
           <ListaPresetsView
