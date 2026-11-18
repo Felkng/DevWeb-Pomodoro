@@ -100,6 +100,7 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
               <button
                 type="button"
                 data-testid={`editar-${tarefa.id}`}
+                aria-label={`Editar tarefa ${tarefa.titulo}`}
                 onClick={() => onEditarTarefa(tarefa)}
                 title="Editar Tarefa"
                 className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200"
@@ -109,6 +110,7 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
               <button
                 type="button"
                 data-testid={`excluir-${tarefa.id}`}
+                aria-label={`Excluir tarefa ${tarefa.titulo}`}
                 onClick={() => onExcluirTarefa(tarefa)}
                 title="Excluir Tarefa"
                 className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50"

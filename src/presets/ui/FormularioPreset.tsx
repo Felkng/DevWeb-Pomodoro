@@ -69,7 +69,20 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
   const [pausaCurta, setPausaCurta] = useState(obterValorInicialPausaCurta);
   const [ciclos, setCiclos] = useState(obterValorInicialCiclos);
   const [pausaLonga, setPausaLonga] = useState(obterValorInicialPausaLonga);
-  const [erro, setErro] = useState<string | null>(null);
+  const [erros, setErros] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!aberto) {
+      return;
+    }
+    const lidarKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCancelar();
+      }
+    };
+    window.addEventListener("keydown", lidarKeyDown);
+    return () => window.removeEventListener("keydown", lidarKeyDown);
+  }, [aberto, onCancelar]);
 
   useEffect(() => {
     if (!aberto) {
@@ -89,7 +102,7 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
       setCiclos(4);
       setPausaLonga(15);
     }
-    setErro(null);
+    setErros({});
   }, [aberto, presetEdicao]);
 
   if (!aberto) {
@@ -98,35 +111,35 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
 
   const validarESubmeter = (evento: React.FormEvent) => {
     evento.preventDefault();
-    setErro(null);
+    const novosErros: Record<string, string> = {};
 
     const resNome = NomePreset.criar(nome);
     if (resNome.temFalha()) {
-      setErro(resNome.obterErro());
-      return;
+      novosErros.nome = resNome.obterErro();
     }
 
     const resFoco = MinutosFoco.criar(Number(tempoFoco));
     if (resFoco.temFalha()) {
-      setErro(resFoco.obterErro());
-      return;
+      novosErros.tempoFocoMin = resFoco.obterErro();
     }
 
     const resPausaCurta = MinutosPausaCurta.criar(Number(pausaCurta));
     if (resPausaCurta.temFalha()) {
-      setErro(resPausaCurta.obterErro());
-      return;
+      novosErros.tempoPausaCurtaMin = resPausaCurta.obterErro();
     }
 
     const resCiclos = CiclosAntesPausaLonga.criar(Number(ciclos));
     if (resCiclos.temFalha()) {
-      setErro(resCiclos.obterErro());
-      return;
+      novosErros.ciclosAntesPausaLonga = resCiclos.obterErro();
     }
 
     const resPausaLonga = MinutosPausaLonga.criar(Number(pausaLonga));
     if (resPausaLonga.temFalha()) {
-      setErro(resPausaLonga.obterErro());
+      novosErros.tempoPausaLongaMin = resPausaLonga.obterErro();
+    }
+
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros);
       return;
     }
 
@@ -156,12 +169,6 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
           {tituloModal}
         </h2>
 
-        {erro && (
-          <div role="alert" className="mt-3 rounded-lg bg-rose-50 p-3 text-sm text-rose-700">
-            {erro}
-          </div>
-        )}
-
         <form onSubmit={validarESubmeter} className="mt-4 space-y-4">
           <div>
             <label htmlFor="input-nome-preset" className="block text-sm font-semibold text-slate-700">
@@ -176,6 +183,11 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
               placeholder="Ex: Estudo Intenso"
               required
             />
+            {erros.nome && (
+              <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                {erros.nome}
+              </span>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -193,6 +205,11 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none"
                 required
               />
+              {erros.tempoFocoMin && (
+                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                  {erros.tempoFocoMin}
+                </span>
+              )}
             </div>
             <div>
               <label htmlFor="input-pausa-curta" className="block text-sm font-semibold text-slate-700">
@@ -208,6 +225,11 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none"
                 required
               />
+              {erros.tempoPausaCurtaMin && (
+                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                  {erros.tempoPausaCurtaMin}
+                </span>
+              )}
             </div>
           </div>
 
@@ -226,6 +248,11 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none"
                 required
               />
+              {erros.ciclosAntesPausaLonga && (
+                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                  {erros.ciclosAntesPausaLonga}
+                </span>
+              )}
             </div>
             <div>
               <label htmlFor="input-pausa-longa" className="block text-sm font-semibold text-slate-700">
@@ -241,6 +268,11 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none"
                 required
               />
+              {erros.tempoPausaLongaMin && (
+                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                  {erros.tempoPausaLongaMin}
+                </span>
+              )}
             </div>
           </div>
 

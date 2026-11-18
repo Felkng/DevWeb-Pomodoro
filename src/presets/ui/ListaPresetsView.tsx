@@ -73,6 +73,8 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   type="button"
                   data-testid={`editar-${preset.id}`}
                   disabled={emUsoPorSessao}
+                  aria-disabled={emUsoPorSessao}
+                  aria-label={`Editar temporizador ${preset.nome}`}
                   onClick={() => onEditarPreset(preset)}
                   title={tituloAcaoEditar}
                   className="rounded p-1 text-xs text-slate-500 hover:bg-slate-200 disabled:opacity-40"
@@ -83,6 +85,8 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   type="button"
                   data-testid={`excluir-${preset.id}`}
                   disabled={emUsoPorSessao}
+                  aria-disabled={emUsoPorSessao}
+                  aria-label={`Excluir temporizador ${preset.nome}`}
                   onClick={() => onExcluirPreset(preset)}
                   title={tituloAcaoExcluir}
                   className="rounded p-1 text-xs text-rose-600 hover:bg-rose-50 disabled:opacity-40"
