@@ -102,7 +102,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         {estadoMaquina === "ocioso" && (
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-col items-center gap-3">
             <button
               type="button"
               onClick={onIniciar}
@@ -114,9 +114,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={onPersonalizarTempos}
-                className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 shadow-sm transition"
+                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition"
               >
-                ⚙️ Personalizar Tempos
+                Personalizar tempos
               </button>
             )}
           </div>
