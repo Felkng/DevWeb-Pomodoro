@@ -153,8 +153,11 @@ export const App: React.FC = () => {
     return Math.round(diferencaMs / 1000);
   }, [estadoMaquina.context.sessao, presetAtivo, agoraMs]);
 
-  // Troca de Preset (RN-02: encerra automaticamente a sessão ativa em andamento)
+  // Troca de Preset (RN-02: ao selecionar outro preset, encerra a sessão ativa)
   const handleSelecionarPreset = (id: string) => {
+    if (id === idPresetSelecionado) {
+      return;
+    }
     if (!estadoMaquina.matches("ocioso")) {
       send({ type: "ENCERRAR" });
     }
@@ -314,6 +317,7 @@ export const App: React.FC = () => {
             sessao={sessaoDtoParaView}
             tempoRestanteSegundos={tempoRestanteSegundos}
             onIniciar={() => {
+              emissorAudio.desbloquearNoGestoDoUsuario();
               if (presetAtivo) {
                 send({ type: "INICIAR", preset: presetAtivo, agora: Date.now() });
               }

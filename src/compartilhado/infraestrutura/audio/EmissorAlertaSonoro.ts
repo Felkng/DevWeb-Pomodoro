@@ -6,12 +6,19 @@ export class EmissorAlertaSonoro {
       this.contextoAudio = contextoExistente;
       return;
     }
-    const ConstrutorContexto = window.AudioContext;
+    const ConstrutorContexto =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
     if (typeof ConstrutorContexto === "undefined") {
       this.contextoAudio = null;
       return;
     }
     this.contextoAudio = new ConstrutorContexto();
+  }
+
+  public desbloquearNoGestoDoUsuario(): void {
+    this.desbloquearContextoSeSuspenso();
   }
 
   public tocarAlertaFimDeFase(): void {
