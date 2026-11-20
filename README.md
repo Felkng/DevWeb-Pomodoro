@@ -8,12 +8,12 @@ Projeto desenvolvido para a disciplina de **Desenvolvimento Web** (Projeto 2 / T
 
 ## 👥 Equipe do Projeto
 
-| Papel | Nome | Matrícula / GitHub |
-| :--- | :--- | :--- |
-| **Líder da Equipe** | *[Nome do Líder]* | *[Matrícula / @usuario]* |
-| Membro | *[Nome do Membro 1]* | *[Matrícula / @usuario]* |
-| Membro | *[Nome do Membro 2]* | *[Matrícula / @usuario]* |
-| Membro | *[Nome do Membro 3]* | *[Matrícula / @usuario]* |
+| Papel | Nome |
+| :--- | :--- |
+| **Líder da Equipe** | *Felipe Rodrigues de Sousa Ferreira* |
+| Membro | *Luigi Eliabe Ataide da Silva* |
+| Membro | *Ana Kelly Souza Ribeiro* |
+| Membro | *Maicon Pedro Macedo Leles* |
 
 ---
 
