@@ -75,6 +75,32 @@ export const App: React.FC = () => {
   // Sessão Retomada (RF-12, RF-13, UC10, UC11)
   const [sessaoFoiRetomada, setSessaoFoiRetomada] = useState(false);
 
+  // Modo Escuro
+  const [temaEscuro, setTemaEscuro] = useState<boolean>(() => {
+    const temaSalvo = localStorage.getItem("tema_preferido");
+    if (temaSalvo) {
+      return temaSalvo === "dark";
+    }
+    if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (temaEscuro) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("tema_preferido", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("tema_preferido", "light");
+    }
+  }, [temaEscuro]);
+
+  const alternarTema = () => {
+    setTemaEscuro((prev) => !prev);
+  };
+
   // Erro de Persistência (RNF-06)
   const [erroPersistencia, setErroPersistencia] = useState<string | null>(null);
   const reportarPersistencia = (resultado: { temFalha: () => boolean; obterErro: () => string }) => {
@@ -319,13 +345,34 @@ export const App: React.FC = () => {
 
   return (
     <div className="mx-auto min-h-screen max-w-6xl p-4 sm:p-6 lg:p-8">
-      <header className="mb-8 border-b border-slate-200 pb-4">
-        <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
-          Temporizador de Foco (Pomodoro)
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Aplicação de gestão de ciclos de estudo com persistência local e painel de tarefas.
-        </p>
+      <header className="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
+            Temporizador de Foco (Pomodoro)
+          </h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Aplicação de gestão de ciclos de estudo com persistência local e painel de tarefas.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={alternarTema}
+          aria-label={temaEscuro ? "Mudar para modo claro" : "Mudar para modo escuro"}
+          title={temaEscuro ? "Mudar para modo claro" : "Mudar para modo escuro"}
+          className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 sm:self-auto"
+        >
+          {temaEscuro ? (
+            <>
+              <span aria-hidden="true">☀️</span>
+              <span>Modo Claro</span>
+            </>
+          ) : (
+            <>
+              <span aria-hidden="true">🌙</span>
+              <span>Modo Escuro</span>
+            </>
+          )}
+        </button>
       </header>
 
       {erroPersistencia && (

@@ -145,4 +145,23 @@ describe("App Integrado (Pomodoro + Presets + Tarefas)", () => {
     // Sessão deve voltar ao estado ocioso
     expect(screen.getByRole("button", { name: /Iniciar Sessão/i })).toBeInTheDocument();
   });
+
+  it("deve alternar entre modo claro e modo escuro salvando preferência no localStorage", () => {
+    render(<App />);
+
+    const botaoTema = screen.getByRole("button", { name: /Mudar para modo escuro/i });
+    expect(botaoTema).toBeInTheDocument();
+
+    // Clicar para ativar modo escuro
+    fireEvent.click(botaoTema);
+
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(localStorage.getItem("tema_preferido")).toBe("dark");
+    expect(screen.getByRole("button", { name: /Mudar para modo claro/i })).toBeInTheDocument();
+
+    // Clicar novamente para voltar ao modo claro
+    fireEvent.click(screen.getByRole("button", { name: /Mudar para modo claro/i }));
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(localStorage.getItem("tema_preferido")).toBe("light");
+  });
 });
