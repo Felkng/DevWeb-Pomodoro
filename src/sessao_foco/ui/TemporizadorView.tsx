@@ -1,4 +1,13 @@
 import React, { useState } from "react";
+import {
+  PlayIcon,
+  PauseIcon,
+  ForwardIcon,
+  ArrowPathIcon,
+  StopIcon,
+  TrashIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/outline";
 import { SessaoAtivaDto, TipoFaseSessao } from "../dominio/SessaoAtiva";
 import { DialogoConfirmacao } from "../../compartilhado/ui/dialogos/DialogoConfirmacao";
 
@@ -74,8 +83,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
           <button
             type="button"
             onClick={() => setModalAberto("descartar")}
-            className="font-bold underline hover:text-amber-950 dark:hover:text-amber-100"
+            className="inline-flex items-center gap-1 font-bold underline hover:text-amber-950 dark:hover:text-amber-100"
           >
+            <TrashIcon className="h-3.5 w-3.5" aria-hidden="true" />
             Descartar
           </button>
         </div>
@@ -108,8 +118,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={onIniciar}
               aria-label="Iniciar sessão de foco"
               title="Iniciar cronômetro para o ciclo atual"
-              className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+              className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
+              <PlayIcon className="h-5 w-5 mr-2" aria-hidden="true" />
               Iniciar Sessão
             </button>
             {onPersonalizarTempos && (
@@ -118,8 +129,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
                 onClick={onPersonalizarTempos}
                 aria-label="Personalizar tempos e ciclos do temporizador atual"
                 title="Editar duração das fases de foco e pausas"
-                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition dark:text-slate-400 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded p-1"
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition dark:text-slate-400 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded p-1"
               >
+                <PencilSquareIcon className="h-3.5 w-3.5" aria-hidden="true" />
                 Personalizar tempos
               </button>
             )}
@@ -133,8 +145,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={onPausar}
               aria-label="Pausar cronômetro"
               title="Pausa temporariamente o tempo restante"
-              className="rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-amber-600 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500"
+              className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-amber-600 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500"
             >
+              <PauseIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Pausar
             </button>
             <button
@@ -142,8 +155,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={onPularFase}
               aria-label="Pular Fase (avançar para o próximo ciclo)"
               title="Avança imediatamente para a próxima fase"
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
+              <ForwardIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Pular Fase
             </button>
             <button
@@ -151,8 +165,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={() => setModalAberto("reiniciar")}
               aria-label="Reiniciar contagem de ciclos"
               title="Zera os ciclos concluídos mantendo o temporizador"
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
+              <ArrowPathIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Reiniciar Ciclos
             </button>
             <button
@@ -160,8 +175,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={() => setModalAberto("encerrar")}
               aria-label="Encerrar sessão de estudo"
               title="Finaliza a sessão atual e retorna ao estado inicial"
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
+              className="inline-flex items-center justify-center rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
             >
+              <StopIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Encerrar
             </button>
             {sessaoFoiRetomada && (
@@ -170,8 +186,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
                 onClick={() => setModalAberto("descartar")}
                 aria-label="Descartar sessão restaurada"
                 title="Descarta a sessão recuperada da visita anterior"
-                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
               >
+                <TrashIcon className="h-3.5 w-3.5 mr-1" aria-hidden="true" />
                 Descartar
               </button>
             )}
@@ -185,8 +202,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={onRetomar}
               aria-label="Retomar cronômetro"
               title="Retoma a contagem do tempo"
-              className="rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-emerald-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500"
+              className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-emerald-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500"
             >
+              <PlayIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Retomar
             </button>
             <button
@@ -194,8 +212,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={onPularFase}
               aria-label="Pular Fase (avançar para o próximo ciclo)"
               title="Avança imediatamente para a próxima fase"
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
+              <ForwardIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Pular Fase
             </button>
             <button
@@ -203,8 +222,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={() => setModalAberto("reiniciar")}
               aria-label="Reiniciar contagem de ciclos"
               title="Zera os ciclos concluídos mantendo o temporizador"
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
+              <ArrowPathIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Reiniciar Ciclos
             </button>
             <button
@@ -212,8 +232,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={() => setModalAberto("encerrar")}
               aria-label="Encerrar sessão de estudo"
               title="Finaliza a sessão atual e retorna ao estado inicial"
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
+              className="inline-flex items-center justify-center rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
             >
+              <StopIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
               Encerrar
             </button>
             <button
@@ -221,8 +242,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               onClick={() => setModalAberto("descartar")}
               aria-label="Descartar sessão restaurada"
               title="Descarta a sessão recuperada da visita anterior"
-              className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
             >
+              <TrashIcon className="h-3.5 w-3.5 mr-1" aria-hidden="true" />
               Descartar
             </button>
           </>
@@ -239,8 +261,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
                 onClick={onEncerrar}
                 aria-label="Iniciar nova sessão de estudo"
                 title="Começar um novo ciclo de estudo"
-                className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+                className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
               >
+                <PlayIcon className="h-4 w-4 mr-1.5" aria-hidden="true" />
                 Nova Sessão
               </button>
               {sessaoFoiRetomada && (
@@ -249,8 +272,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
                   onClick={() => setModalAberto("descartar")}
                   aria-label="Descartar sessão restaurada"
                   title="Descarta a sessão recuperada da visita anterior"
-                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
                 >
+                  <TrashIcon className="h-3.5 w-3.5 mr-1" aria-hidden="true" />
                   Descartar
                 </button>
               )}

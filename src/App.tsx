@@ -34,6 +34,7 @@ import { RepositorioSessaoAtiva } from "./sessao_foco/persistencia/RepositorioSe
 import { maquinaSessaoFoco } from "./sessao_foco/maquina/maquinaSessaoFoco";
 import { TemporizadorView } from "./sessao_foco/ui/TemporizadorView";
 import { SessaoAtivaDto } from "./sessao_foco/dominio/SessaoAtiva";
+import { SunIcon, MoonIcon, EyeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export type TipoTema = "light" | "dark" | "high-contrast";
 
@@ -376,7 +377,7 @@ export const App: React.FC = () => {
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <span aria-hidden="true">☀️</span>
+            <SunIcon className="h-4 w-4" aria-hidden="true" />
             <span>Claro</span>
           </button>
 
@@ -392,7 +393,7 @@ export const App: React.FC = () => {
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <span aria-hidden="true">🌙</span>
+            <MoonIcon className="h-4 w-4" aria-hidden="true" />
             <span>Escuro</span>
           </button>
 
@@ -408,7 +409,7 @@ export const App: React.FC = () => {
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
           >
-            <span aria-hidden="true">◐</span>
+            <EyeIcon className="h-4 w-4" aria-hidden="true" />
             <span>Alto Contraste</span>
           </button>
         </div>
@@ -423,10 +424,11 @@ export const App: React.FC = () => {
           <button
             type="button"
             aria-label="Fechar alerta de erro de persistência"
+            title="Fechar alerta"
             onClick={() => setErroPersistencia(null)}
-            className="ml-4 font-bold text-rose-700 hover:text-rose-950"
+            className="ml-4 rounded p-1 font-bold text-rose-700 hover:text-rose-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
           >
-            ✕
+            <XMarkIcon className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       )}

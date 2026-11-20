@@ -1,5 +1,6 @@
 import React from "react";
 import { PresetDto } from "../dominio/Preset";
+import { PlusIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface PropriedadesListaPresetsView {
   readonly presets: readonly PresetDto[];
@@ -36,9 +37,10 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
           onClick={onNovoPreset}
           aria-label="+ Novo Temporizador personalizado"
           title="Adicionar uma nova configuração de tempos"
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
         >
-          + Novo Temporizador
+          <PlusIcon className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>Novo Temporizador</span>
         </button>
       </div>
 
@@ -87,9 +89,9 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   aria-label={`Editar temporizador ${preset.nome}`}
                   onClick={() => onEditarPreset(preset)}
                   title={tituloAcaoEditar}
-                  className="rounded p-1 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  className="rounded p-1 text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 >
-                  ✎
+                  <PencilSquareIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
@@ -99,9 +101,9 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   aria-label={`Excluir temporizador ${preset.nome}`}
                   onClick={() => onExcluirPreset(preset)}
                   title={tituloAcaoExcluir}
-                  className="rounded p-1 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                  className="rounded p-1 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                 >
-                  ✕
+                  <TrashIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>

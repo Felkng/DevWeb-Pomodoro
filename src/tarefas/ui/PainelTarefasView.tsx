@@ -1,6 +1,7 @@
 import React from "react";
 import { TarefaDto } from "../dominio/Tarefa";
 import { TipoEstadoTarefa, TipoPrioridadeTarefa } from "../dominio/ValoresTarefa";
+import { PlusIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface PropriedadesPainelTarefasView {
   readonly tarefas: readonly TarefaDto[];
@@ -62,9 +63,10 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
           onClick={onNovaTarefa}
           aria-label="+ Adicionar nova tarefa de estudo"
           title="Criar nova tarefa para a lista"
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
         >
-          + Adicionar
+          <PlusIcon className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>Adicionar</span>
         </button>
       </div>
 
@@ -107,9 +109,9 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
                 aria-label={`Editar tarefa: ${tarefa.titulo}`}
                 onClick={() => onEditarTarefa(tarefa)}
                 title="Editar Tarefa"
-                className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="rounded p-1 text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
-                ✎
+                <PencilSquareIcon className="h-4 w-4" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -117,9 +119,9 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
                 aria-label={`Excluir tarefa: ${tarefa.titulo}`}
                 onClick={() => onExcluirTarefa(tarefa)}
                 title="Excluir Tarefa"
-                className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="rounded p-1 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
               >
-                ✕
+                <TrashIcon className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
           </div>
