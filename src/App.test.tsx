@@ -146,22 +146,54 @@ describe("App Integrado (Pomodoro + Presets + Tarefas)", () => {
     expect(screen.getByRole("button", { name: /Iniciar Sessão/i })).toBeInTheDocument();
   });
 
-  it("deve alternar entre modo claro e modo escuro salvando preferência no localStorage", () => {
+  it("deve alternar entre modo claro, escuro e alto contraste salvando no localStorage", () => {
     render(<App />);
 
-    const botaoTema = screen.getByRole("button", { name: /Mudar para modo escuro/i });
-    expect(botaoTema).toBeInTheDocument();
+    const botaoClaro = screen.getByRole("button", { name: /Ativar modo claro/i });
+    const botaoEscuro = screen.getByRole("button", { name: /Ativar modo escuro/i });
+    const botaoAltoContraste = screen.getByRole("button", { name: /Ativar modo alto contraste/i });
+
+    expect(botaoClaro).toBeInTheDocument();
+    expect(botaoEscuro).toBeInTheDocument();
+    expect(botaoAltoContraste).toBeInTheDocument();
+
+    // Início no claro por padrão
+    expect(botaoClaro).toHaveAttribute("aria-pressed", "true");
+    expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("high-contrast")).toBe(false);
 
     // Clicar para ativar modo escuro
-    fireEvent.click(botaoTema);
-
+    fireEvent.click(botaoEscuro);
     expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.classList.contains("high-contrast")).toBe(false);
     expect(localStorage.getItem("tema_preferido")).toBe("dark");
-    expect(screen.getByRole("button", { name: /Mudar para modo claro/i })).toBeInTheDocument();
+    expect(botaoEscuro).toHaveAttribute("aria-pressed", "true");
 
-    // Clicar novamente para voltar ao modo claro
-    fireEvent.click(screen.getByRole("button", { name: /Mudar para modo claro/i }));
+    // Clicar para ativar modo alto contraste
+    fireEvent.click(botaoAltoContraste);
+    expect(document.documentElement.classList.contains("high-contrast")).toBe(true);
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(localStorage.getItem("tema_preferido")).toBe("high-contrast");
+    expect(botaoAltoContraste).toHaveAttribute("aria-pressed", "true");
+
+    // Voltar para o claro
+    fireEvent.click(botaoClaro);
     expect(document.documentElement.classList.contains("dark")).toBe(false);
+    expect(document.documentElement.classList.contains("high-contrast")).toBe(false);
     expect(localStorage.getItem("tema_preferido")).toBe("light");
+    expect(botaoClaro).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("deve conter legendas acessíveis, atributos aria-label e títulos nos botões principais", () => {
+    render(<App />);
+
+    const botaoIniciar = screen.getByRole("button", { name: "Iniciar sessão de foco" });
+    expect(botaoIniciar).toHaveAttribute("title", "Iniciar cronômetro para o ciclo atual");
+
+    const botaoNovoPreset = screen.getByRole("button", { name: "+ Novo Temporizador personalizado" });
+    expect(botaoNovoPreset).toHaveAttribute("title", "Adicionar uma nova configuração de tempos");
+
+    const botaoNovaTarefa = screen.getByRole("button", { name: "+ Adicionar nova tarefa de estudo" });
+    expect(botaoNovaTarefa).toHaveAttribute("title", "Criar nova tarefa para a lista");
   });
 });

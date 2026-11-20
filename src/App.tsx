@@ -35,6 +35,8 @@ import { maquinaSessaoFoco } from "./sessao_foco/maquina/maquinaSessaoFoco";
 import { TemporizadorView } from "./sessao_foco/ui/TemporizadorView";
 import { SessaoAtivaDto } from "./sessao_foco/dominio/SessaoAtiva";
 
+export type TipoTema = "light" | "dark" | "high-contrast";
+
 export const App: React.FC = () => {
   const armazenamento = useMemo(() => new ArmazenamentoLocal(), []);
   const emissorAudio = useMemo(() => new EmissorAlertaSonoro(), []);
@@ -75,31 +77,34 @@ export const App: React.FC = () => {
   // Sessão Retomada (RF-12, RF-13, UC10, UC11)
   const [sessaoFoiRetomada, setSessaoFoiRetomada] = useState(false);
 
-  // Modo Escuro
-  const [temaEscuro, setTemaEscuro] = useState<boolean>(() => {
-    const temaSalvo = localStorage.getItem("tema_preferido");
-    if (temaSalvo) {
-      return temaSalvo === "dark";
+  // Tema (Claro, Escuro e Alto Contraste)
+  const [tema, setTema] = useState<TipoTema>(() => {
+    const temaSalvo = localStorage.getItem("tema_preferido") as TipoTema | null;
+    if (temaSalvo === "light" || temaSalvo === "dark" || temaSalvo === "high-contrast") {
+      return temaSalvo;
     }
     if (typeof window !== "undefined" && typeof window.matchMedia === "function") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (window.matchMedia("(prefers-contrast: more)").matches) {
+        return "high-contrast";
+      }
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
     }
-    return false;
+    return "light";
   });
 
   useEffect(() => {
-    if (temaEscuro) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("tema_preferido", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("tema_preferido", "light");
-    }
-  }, [temaEscuro]);
+    const raiz = document.documentElement;
+    raiz.classList.remove("dark", "high-contrast");
 
-  const alternarTema = () => {
-    setTemaEscuro((prev) => !prev);
-  };
+    if (tema === "dark") {
+      raiz.classList.add("dark");
+    } else if (tema === "high-contrast") {
+      raiz.classList.add("high-contrast", "dark");
+    }
+    localStorage.setItem("tema_preferido", tema);
+  }, [tema]);
 
   // Erro de Persistência (RNF-06)
   const [erroPersistencia, setErroPersistencia] = useState<string | null>(null);
@@ -354,25 +359,59 @@ export const App: React.FC = () => {
             Aplicação de gestão de ciclos de estudo com persistência local e painel de tarefas.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={alternarTema}
-          aria-label={temaEscuro ? "Mudar para modo claro" : "Mudar para modo escuro"}
-          title={temaEscuro ? "Mudar para modo claro" : "Mudar para modo escuro"}
-          className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 sm:self-auto"
+        <div
+          role="group"
+          aria-label="Preferências de tema e acessibilidade visual"
+          className="flex items-center gap-1 rounded-xl border border-slate-300 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-800"
         >
-          {temaEscuro ? (
-            <>
-              <span aria-hidden="true">☀️</span>
-              <span>Modo Claro</span>
-            </>
-          ) : (
-            <>
-              <span aria-hidden="true">🌙</span>
-              <span>Modo Escuro</span>
-            </>
-          )}
-        </button>
+          <button
+            type="button"
+            onClick={() => setTema("light")}
+            aria-pressed={tema === "light"}
+            aria-label="Ativar modo claro"
+            title="Ativar modo claro"
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+              tema === "light"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <span aria-hidden="true">☀️</span>
+            <span>Claro</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setTema("dark")}
+            aria-pressed={tema === "dark"}
+            aria-label="Ativar modo escuro"
+            title="Ativar modo escuro"
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+              tema === "dark"
+                ? "bg-slate-700 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <span aria-hidden="true">🌙</span>
+            <span>Escuro</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setTema("high-contrast")}
+            aria-pressed={tema === "high-contrast"}
+            aria-label="Ativar modo alto contraste"
+            title="Ativar modo alto contraste (WCAG AAA)"
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+              tema === "high-contrast"
+                ? "bg-yellow-400 text-black shadow-sm font-bold"
+                : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            }`}
+          >
+            <span aria-hidden="true">◐</span>
+            <span>Alto Contraste</span>
+          </button>
+        </div>
       </header>
 
       {erroPersistencia && (
