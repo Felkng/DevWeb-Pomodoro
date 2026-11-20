@@ -106,7 +106,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <button
               type="button"
               onClick={onIniciar}
-              className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition"
+              aria-label="Iniciar sessão de foco"
+              title="Iniciar cronômetro para o ciclo atual"
+              className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
               Iniciar Sessão
             </button>
@@ -114,7 +116,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={onPersonalizarTempos}
-                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition dark:text-slate-400 dark:hover:text-slate-200"
+                aria-label="Personalizar tempos e ciclos do temporizador atual"
+                title="Editar duração das fases de foco e pausas"
+                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition dark:text-slate-400 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded p-1"
               >
                 Personalizar tempos
               </button>
@@ -127,28 +131,36 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <button
               type="button"
               onClick={onPausar}
-              className="rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-amber-600 transition"
+              aria-label="Pausar cronômetro"
+              title="Pausa temporariamente o tempo restante"
+              className="rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-amber-600 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500"
             >
               Pausar
             </button>
             <button
               type="button"
               onClick={onPularFase}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              aria-label="Pular Fase (avançar para o próximo ciclo)"
+              title="Avança imediatamente para a próxima fase"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
               Pular Fase
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("reiniciar")}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              aria-label="Reiniciar contagem de ciclos"
+              title="Zera os ciclos concluídos mantendo o temporizador"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
               Reiniciar Ciclos
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("encerrar")}
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60"
+              aria-label="Encerrar sessão de estudo"
+              title="Finaliza a sessão atual e retorna ao estado inicial"
+              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
             >
               Encerrar
             </button>
@@ -156,7 +168,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={() => setModalAberto("descartar")}
-                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                aria-label="Descartar sessão restaurada"
+                title="Descarta a sessão recuperada da visita anterior"
+                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
               >
                 Descartar
               </button>
@@ -169,35 +183,45 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <button
               type="button"
               onClick={onRetomar}
-              className="rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-emerald-700 transition"
+              aria-label="Retomar cronômetro"
+              title="Retoma a contagem do tempo"
+              className="rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-emerald-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500"
             >
               Retomar
             </button>
             <button
               type="button"
               onClick={onPularFase}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              aria-label="Pular Fase (avançar para o próximo ciclo)"
+              title="Avança imediatamente para a próxima fase"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
               Pular Fase
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("reiniciar")}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+              aria-label="Reiniciar contagem de ciclos"
+              title="Zera os ciclos concluídos mantendo o temporizador"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
             >
               Reiniciar Ciclos
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("encerrar")}
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60"
+              aria-label="Encerrar sessão de estudo"
+              title="Finaliza a sessão atual e retorna ao estado inicial"
+              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-500"
             >
               Encerrar
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("descartar")}
-              className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Descartar sessão restaurada"
+              title="Descarta a sessão recuperada da visita anterior"
+              className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
             >
               Descartar
             </button>
@@ -213,7 +237,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={onEncerrar}
-                className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition"
+                aria-label="Iniciar nova sessão de estudo"
+                title="Começar um novo ciclo de estudo"
+                className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
               >
                 Nova Sessão
               </button>
@@ -221,7 +247,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
                 <button
                   type="button"
                   onClick={() => setModalAberto("descartar")}
-                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition"
+                  aria-label="Descartar sessão restaurada"
+                  title="Descarta a sessão recuperada da visita anterior"
+                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
                 >
                   Descartar
                 </button>
