@@ -6,7 +6,9 @@ interface PropriedadesTemporizadorView {
   readonly estadoMaquina: "ocioso" | "emExecucao" | "pausado" | "concluido";
   readonly sessao: SessaoAtivaDto | null;
   readonly tempoRestanteSegundos: number;
+  readonly sessaoFoiRetomada?: boolean;
   readonly onIniciar: () => void;
+  readonly onPersonalizarTempos?: () => void;
   readonly onPausar: () => void;
   readonly onRetomar: () => void;
   readonly onPularFase: () => void;
@@ -31,7 +33,9 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
   estadoMaquina,
   sessao,
   tempoRestanteSegundos,
+  sessaoFoiRetomada = false,
   onIniciar,
+  onPersonalizarTempos,
   onPausar,
   onRetomar,
   onPularFase,
@@ -61,6 +65,22 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
       aria-label="Temporizador Pomodoro"
       className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-sm text-center"
     >
+      {sessaoFoiRetomada && estadoMaquina !== "ocioso" && (
+        <div
+          role="status"
+          className="mb-4 flex items-center justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900 w-full max-w-md"
+        >
+          <span>Sessão restaurada da sua última visita.</span>
+          <button
+            type="button"
+            onClick={() => setModalAberto("descartar")}
+            className="font-bold underline hover:text-amber-950"
+          >
+            Descartar
+          </button>
+        </div>
+      )}
+
       <div className="flex items-center gap-3">
         <span
           className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${CORES_FASE[faseAtual]}`}
@@ -82,13 +102,24 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         {estadoMaquina === "ocioso" && (
-          <button
-            type="button"
-            onClick={onIniciar}
-            className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition"
-          >
-            Iniciar Sessão
-          </button>
+          <div className="flex flex-col items-center gap-3">
+            <button
+              type="button"
+              onClick={onIniciar}
+              className="rounded-xl bg-indigo-600 px-8 py-3 text-base font-bold text-white shadow-md hover:bg-indigo-700 transition"
+            >
+              Iniciar Sessão
+            </button>
+            {onPersonalizarTempos && (
+              <button
+                type="button"
+                onClick={onPersonalizarTempos}
+                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition"
+              >
+                Personalizar tempos
+              </button>
+            )}
+          </div>
         )}
 
         {estadoMaquina === "emExecucao" && (
@@ -121,6 +152,15 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             >
               Encerrar
             </button>
+            {sessaoFoiRetomada && (
+              <button
+                type="button"
+                onClick={() => setModalAberto("descartar")}
+                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition"
+              >
+                Descartar
+              </button>
+            )}
           </>
         )}
 
@@ -169,13 +209,24 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <p className="text-lg font-bold text-emerald-600">
               Sessão Concluída com Sucesso! Parabéns pelo foco.
             </p>
-            <button
-              type="button"
-              onClick={onEncerrar}
-              className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition"
-            >
-              Nova Sessão
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={onEncerrar}
+                className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white shadow hover:bg-indigo-700 transition"
+              >
+                Nova Sessão
+              </button>
+              {sessaoFoiRetomada && (
+                <button
+                  type="button"
+                  onClick={() => setModalAberto("descartar")}
+                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition"
+                >
+                  Descartar
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

@@ -90,4 +90,59 @@ describe("App Integrado (Pomodoro + Presets + Tarefas)", () => {
     expect(screen.getByText("Primeira Tarefa Atualizada")).toBeInTheDocument();
     expect(screen.getByText("Segunda Tarefa")).toBeInTheDocument();
   });
+
+  it("ao clicar novamente no preset já ativo com sessão em andamento, não deve encerrar a sessão (RN-02)", () => {
+    render(<App />);
+
+    // Iniciar sessão com o preset padrão
+    fireEvent.click(screen.getByRole("button", { name: /Iniciar Sessão/i }));
+    expect(screen.getByRole("button", { name: /Pausar/i })).toBeInTheDocument();
+
+    // Clicar novamente no card do preset padrão
+    const botaoPreset = screen.getByText("Pomodoro Padrão");
+    fireEvent.click(botaoPreset);
+
+    // A sessão deve continuar em andamento
+    expect(screen.getByRole("button", { name: /Pausar/i })).toBeInTheDocument();
+  });
+
+  it("deve restaurar sessão automaticamente do localStorage com aviso de retomada e permitir descarte (RF-12, RF-13, UC10, UC11)", () => {
+    const agora = Date.now();
+    const sessaoMock = {
+      id: "sessao-retomada-1",
+      presetId: "preset-padrao-pomodoro",
+      snapshotPreset: {
+        tempoFocoMin: 25,
+        tempoPausaCurtaMin: 5,
+        ciclosAntesPausaLonga: 4,
+        tempoPausaLongaMin: 15,
+      },
+      status: "emAndamento",
+      faseAtual: "foco",
+      cicloAtual: 1,
+      inicioFaseEm: agora - 60000,
+      fimFasePrevistoEm: agora + 24 * 60000,
+      pausadaEm: null,
+      tempoRestanteAoPausarMs: null,
+      criadaEm: agora - 60000,
+      atualizadaEm: agora - 60000,
+    };
+    localStorage.setItem("pomodoro.sessaoAtiva", JSON.stringify(sessaoMock));
+
+    render(<App />);
+
+    // Deve exibir indicação de sessão restaurada
+    expect(screen.getByText("Sessão restaurada da sua última visita.")).toBeInTheDocument();
+
+    // Descartar sessão retomada
+    const botaoDescartar = screen.getAllByRole("button", { name: /Descartar/i })[0];
+    fireEvent.click(botaoDescartar);
+
+    // Confirmar descarte no diálogo
+    const botaoConfirmarDescarte = screen.getByRole("button", { name: "Sim, Descartar" });
+    fireEvent.click(botaoConfirmarDescarte);
+
+    // Sessão deve voltar ao estado ocioso
+    expect(screen.getByRole("button", { name: /Iniciar Sessão/i })).toBeInTheDocument();
+  });
 });

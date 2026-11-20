@@ -72,12 +72,24 @@ export const App: React.FC = () => {
     })
   );
 
+  // Sessão Retomada (RF-12, RF-13, UC10, UC11)
+  const [sessaoFoiRetomada, setSessaoFoiRetomada] = useState(false);
+
+  // Erro de Persistência (RNF-06)
+  const [erroPersistencia, setErroPersistencia] = useState<string | null>(null);
+  const reportarPersistencia = (resultado: { temFalha: () => boolean; obterErro: () => string }) => {
+    if (resultado.temFalha()) {
+      setErroPersistencia(resultado.obterErro());
+    }
+  };
+
   // Restaurar sessão persistida na montagem (RF-12, UC10)
   useEffect(() => {
     const sessaoPersistida = repositorioSessao.carregar(TimestampMs.deNumero(Date.now()));
     if (sessaoPersistida) {
       send({ type: "CARREGAR_PERSISTIDA", sessao: sessaoPersistida });
       setIdPresetSelecionado(sessaoPersistida.obterIdentidade().presetId);
+      setSessaoFoiRetomada(true);
     }
   }, [repositorioSessao, send]);
 
@@ -85,7 +97,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     const sessao = estadoMaquina.context.sessao;
     if (sessao) {
-      repositorioSessao.salvar(sessao);
+      const res = repositorioSessao.salvar(sessao);
+      reportarPersistencia(res);
       return;
     }
     repositorioSessao.limpar();
@@ -153,8 +166,11 @@ export const App: React.FC = () => {
     return Math.round(diferencaMs / 1000);
   }, [estadoMaquina.context.sessao, presetAtivo, agoraMs]);
 
-  // Troca de Preset (RN-02: encerra automaticamente a sessão ativa em andamento)
+  // Troca de Preset (RN-02: ao selecionar outro preset, encerra a sessão ativa)
   const handleSelecionarPreset = (id: string) => {
+    if (id === idPresetSelecionado) {
+      return;
+    }
     if (!estadoMaquina.matches("ocioso")) {
       send({ type: "ENCERRAR" });
     }
@@ -179,7 +195,8 @@ export const App: React.FC = () => {
         });
         const novaLista = listaPresets.atualizar(atualizado);
         setListaPresets(novaLista);
-        repositorioPresets.salvar(novaLista);
+        const res = repositorioPresets.salvar(novaLista);
+        reportarPersistencia(res);
       }
     } else {
       const novo = Preset.criar({
@@ -194,7 +211,8 @@ export const App: React.FC = () => {
       });
       const novaLista = listaPresets.adicionar(novo);
       setListaPresets(novaLista);
-      repositorioPresets.salvar(novaLista);
+      const res = repositorioPresets.salvar(novaLista);
+      reportarPersistencia(res);
       setIdPresetSelecionado(novo.obterId().obterValor());
     }
     setModalPresetAberto(false);
@@ -208,7 +226,8 @@ export const App: React.FC = () => {
     const id = IdentificadorId.deString(presetParaExcluir.id).obterValor();
     const novaLista = listaPresets.remover(id);
     setListaPresets(novaLista);
-    repositorioPresets.salvar(novaLista);
+    const res = repositorioPresets.salvar(novaLista);
+    reportarPersistencia(res);
     const primeiro = novaLista.paraArray()[0];
     if (primeiro) {
       setIdPresetSelecionado(primeiro.obterId().obterValor());
@@ -232,7 +251,8 @@ export const App: React.FC = () => {
         });
         const novaLista = listaTarefas.atualizar(atualizada);
         setListaTarefas(novaLista);
-        repositorioTarefas.salvar(novaLista);
+        const res = repositorioTarefas.salvar(novaLista);
+        reportarPersistencia(res);
       }
     } else {
       const nova = Tarefa.criar({
@@ -245,7 +265,8 @@ export const App: React.FC = () => {
       });
       const novaLista = listaTarefas.adicionar(nova);
       setListaTarefas(novaLista);
-      repositorioTarefas.salvar(novaLista);
+      const res = repositorioTarefas.salvar(novaLista);
+      reportarPersistencia(res);
     }
     setModalTarefaAberto(false);
     setTarefaEmEdicao(null);
@@ -258,7 +279,8 @@ export const App: React.FC = () => {
     const id = IdentificadorId.deString(tarefaParaExcluir.id).obterValor();
     const novaLista = listaTarefas.remover(id);
     setListaTarefas(novaLista);
-    repositorioTarefas.salvar(novaLista);
+    const res = repositorioTarefas.salvar(novaLista);
+    reportarPersistencia(res);
     setTarefaParaExcluir(null);
   };
 
@@ -306,6 +328,23 @@ export const App: React.FC = () => {
         </p>
       </header>
 
+      {erroPersistencia && (
+        <div
+          role="alert"
+          className="mb-6 flex items-center justify-between rounded-xl border border-rose-300 bg-rose-50 p-4 text-sm text-rose-800"
+        >
+          <span>{erroPersistencia}</span>
+          <button
+            type="button"
+            aria-label="Fechar alerta de erro de persistência"
+            onClick={() => setErroPersistencia(null)}
+            className="ml-4 font-bold text-rose-700 hover:text-rose-950"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       <main className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Painel Esquerdo / Central: Temporizador e Presets */}
         <div className="flex flex-col gap-6 lg:col-span-2">
@@ -313,7 +352,16 @@ export const App: React.FC = () => {
             estadoMaquina={estadoVisual}
             sessao={sessaoDtoParaView}
             tempoRestanteSegundos={tempoRestanteSegundos}
+            sessaoFoiRetomada={sessaoFoiRetomada}
+            onPersonalizarTempos={() => {
+              if (presetAtivo) {
+                setPresetEmEdicao(presetAtivo);
+                setModalPresetAberto(true);
+              }
+            }}
             onIniciar={() => {
+              emissorAudio.desbloquearNoGestoDoUsuario();
+              setSessaoFoiRetomada(false);
               if (presetAtivo) {
                 send({ type: "INICIAR", preset: presetAtivo, agora: Date.now() });
               }
@@ -322,8 +370,14 @@ export const App: React.FC = () => {
             onRetomar={() => send({ type: "RETOMAR", agora: Date.now() })}
             onPularFase={() => send({ type: "PULAR_FASE", agora: Date.now() })}
             onReiniciarCiclos={() => send({ type: "REINICIAR_CICLOS", agora: Date.now() })}
-            onEncerrar={() => send({ type: "ENCERRAR" })}
-            onDescartar={() => send({ type: "DESCARTAR" })}
+            onEncerrar={() => {
+              setSessaoFoiRetomada(false);
+              send({ type: "ENCERRAR" });
+            }}
+            onDescartar={() => {
+              setSessaoFoiRetomada(false);
+              send({ type: "DESCARTAR" });
+            }}
           />
 
           <ListaPresetsView

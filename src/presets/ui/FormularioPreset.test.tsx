@@ -119,4 +119,40 @@ describe("FormularioPreset", () => {
 
     expect(inputNome.value).toBe("");
   });
+
+  it("deve fechar modal ao pressionar tecla Escape", () => {
+    const onCancelar = vi.fn();
+    render(
+      <FormularioPreset
+        aberto={true}
+        onSalvar={vi.fn()}
+        onCancelar={onCancelar}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onCancelar).toHaveBeenCalled();
+  });
+
+  it("deve exibir multiplos erros por campo simultaneamente", () => {
+    render(
+      <FormularioPreset
+        aberto={true}
+        onSalvar={vi.fn()}
+        onCancelar={vi.fn()}
+      />
+    );
+
+    const inputNome = screen.getByLabelText(/Nome do temporizador/i);
+    fireEvent.change(inputNome, { target: { value: "   " } });
+
+    const inputFoco = screen.getByLabelText(/Tempo de foco/i);
+    fireEvent.change(inputFoco, { target: { value: "0" } });
+
+    const form = screen.getByRole("dialog").querySelector("form")!;
+    fireEvent.submit(form);
+
+    expect(screen.getByText("Nome do preset deve ter entre 1 e 40 caracteres.")).toBeInTheDocument();
+    expect(screen.getByText("Tempo de foco deve ser um inteiro entre 1 e 120 minutos.")).toBeInTheDocument();
+  });
 });

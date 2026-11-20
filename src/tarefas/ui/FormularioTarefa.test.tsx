@@ -119,4 +119,18 @@ describe("FormularioTarefa (RN-12, VR-06 a VR-08)", () => {
     expect(inputTitulo.value).toBe("");
     expect(selectEstado.value).toBe("backlog");
   });
+
+  it("deve fechar modal ao pressionar tecla Escape", () => {
+    const onCancelar = vi.fn();
+    render(
+      <FormularioTarefa
+        aberto={true}
+        onSalvar={vi.fn()}
+        onCancelar={onCancelar}
+      />
+    );
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onCancelar).toHaveBeenCalled();
+  });
 });

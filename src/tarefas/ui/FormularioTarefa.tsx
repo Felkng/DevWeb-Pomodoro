@@ -51,7 +51,20 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
   const [titulo, setTitulo] = useState(obterValorInicialTitulo);
   const [estado, setEstado] = useState<TipoEstadoTarefa>(obterValorInicialEstado);
   const [prioridade, setPrioridade] = useState<TipoPrioridadeTarefa>(obterValorInicialPrioridade);
-  const [erro, setErro] = useState<string | null>(null);
+  const [erros, setErros] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!aberto) {
+      return;
+    }
+    const lidarKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCancelar();
+      }
+    };
+    window.addEventListener("keydown", lidarKeyDown);
+    return () => window.removeEventListener("keydown", lidarKeyDown);
+  }, [aberto, onCancelar]);
 
   useEffect(() => {
     if (!aberto) {
@@ -73,7 +86,7 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
     setTitulo(tituloInicial);
     setEstado(estadoInicial);
     setPrioridade(prioridadeInicial);
-    setErro(null);
+    setErros({});
   }, [aberto, tarefaEdicao]);
 
   if (!aberto) {
@@ -82,23 +95,25 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
 
   const validarESubmeter = (evento: React.FormEvent) => {
     evento.preventDefault();
-    setErro(null);
+    const novosErros: Record<string, string> = {};
 
     const resTitulo = TituloTarefa.criar(titulo);
     if (resTitulo.temFalha()) {
-      setErro(resTitulo.obterErro());
-      return;
+      novosErros.titulo = resTitulo.obterErro();
     }
 
     const resEstado = EstadoTarefa.criar(estado);
     if (resEstado.temFalha()) {
-      setErro(resEstado.obterErro());
-      return;
+      novosErros.estado = resEstado.obterErro();
     }
 
     const resPrioridade = PrioridadeTarefa.criar(prioridade);
     if (resPrioridade.temFalha()) {
-      setErro(resPrioridade.obterErro());
+      novosErros.prioridade = resPrioridade.obterErro();
+    }
+
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros);
       return;
     }
 
@@ -126,12 +141,6 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
           {tituloModal}
         </h2>
 
-        {erro && (
-          <div role="alert" className="mt-3 rounded-lg bg-rose-50 p-3 text-sm text-rose-700">
-            {erro}
-          </div>
-        )}
-
         <form onSubmit={validarESubmeter} className="mt-4 space-y-4">
           <div>
             <label htmlFor="input-titulo-tarefa" className="block text-sm font-semibold text-slate-700">
@@ -146,6 +155,11 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
               className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none"
               required
             />
+            {erros.titulo && (
+              <span role="alert" className="mt-1 block text-xs font-medium text-rose-600">
+                {erros.titulo}
+              </span>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
