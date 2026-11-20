@@ -95,7 +95,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
       <div
         role="timer"
         aria-live="polite"
-        className="my-8 text-7xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 sm:text-8xl"
+        className="my-8 font-mono tabular-nums text-7xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 sm:text-8xl"
       >
         {textoFormatado}
       </div>
