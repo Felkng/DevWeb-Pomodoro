@@ -34,7 +34,9 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
         <button
           type="button"
           onClick={onNovoPreset}
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition"
+          aria-label="+ Novo Temporizador personalizado"
+          title="Adicionar uma nova configuração de tempos"
+          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
         >
           + Novo Temporizador
         </button>
@@ -63,7 +65,10 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
               <button
                 type="button"
                 onClick={() => onSelecionarPreset(preset.id)}
-                className="text-left"
+                aria-pressed={ehAtivo}
+                aria-label={`Selecionar temporizador ${preset.nome}: ${preset.tempoFocoMin} minutos de foco, ${preset.tempoPausaCurtaMin} minutos de pausa curta`}
+                title={`Ativar temporizador ${preset.nome}`}
+                className="text-left rounded p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 <span className="block text-sm font-semibold text-slate-800 dark:text-slate-100">
                   {preset.nome}
@@ -82,7 +87,7 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   aria-label={`Editar temporizador ${preset.nome}`}
                   onClick={() => onEditarPreset(preset)}
                   title={tituloAcaoEditar}
-                  className="rounded p-1 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 disabled:opacity-40"
+                  className="rounded p-1 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 >
                   ✎
                 </button>
@@ -94,7 +99,7 @@ export const ListaPresetsView: React.FC<PropriedadesListaPresetsView> = ({
                   aria-label={`Excluir temporizador ${preset.nome}`}
                   onClick={() => onExcluirPreset(preset)}
                   title={tituloAcaoExcluir}
-                  className="rounded p-1 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 disabled:opacity-40"
+                  className="rounded p-1 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                 >
                   ✕
                 </button>

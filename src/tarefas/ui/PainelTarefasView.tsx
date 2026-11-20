@@ -60,7 +60,9 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
         <button
           type="button"
           onClick={onNovaTarefa}
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition"
+          aria-label="+ Adicionar nova tarefa de estudo"
+          title="Criar nova tarefa para a lista"
+          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500"
         >
           + Adicionar
         </button>
@@ -84,11 +86,13 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
               </span>
               <div className="flex items-center gap-2 text-xs">
                 <span
+                  aria-label={`Estado: ${ROTULOS_ESTADO[tarefa.estado]}`}
                   className={`rounded-md px-2 py-0.5 font-medium ${CORES_ESTADO[tarefa.estado]}`}
                 >
                   {ROTULOS_ESTADO[tarefa.estado]}
                 </span>
                 <span
+                  aria-label={`Prioridade: ${ROTULOS_PRIORIDADE[tarefa.prioridade]}`}
                   className={`rounded-md border px-1.5 py-0.5 font-medium ${CORES_PRIORIDADE[tarefa.prioridade]}`}
                 >
                   {ROTULOS_PRIORIDADE[tarefa.prioridade]}
@@ -100,20 +104,20 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
               <button
                 type="button"
                 data-testid={`editar-${tarefa.id}`}
-                aria-label={`Editar tarefa ${tarefa.titulo}`}
+                aria-label={`Editar tarefa: ${tarefa.titulo}`}
                 onClick={() => onEditarTarefa(tarefa)}
                 title="Editar Tarefa"
-                className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
+                className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 ✎
               </button>
               <button
                 type="button"
                 data-testid={`excluir-${tarefa.id}`}
-                aria-label={`Excluir tarefa ${tarefa.titulo}`}
+                aria-label={`Excluir tarefa: ${tarefa.titulo}`}
                 onClick={() => onExcluirTarefa(tarefa)}
                 title="Excluir Tarefa"
-                className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40"
+                className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
               >
                 ✕
               </button>
