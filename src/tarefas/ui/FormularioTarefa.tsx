@@ -151,12 +151,14 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
               type="text"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
+              aria-invalid={Boolean(erros.titulo)}
+              aria-describedby={erros.titulo ? "erro-titulo-tarefa" : undefined}
               placeholder="Ex: Ler capítulo 4 de Biologia"
               className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               required
             />
             {erros.titulo && (
-              <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+              <span id="erro-titulo-tarefa" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                 {erros.titulo}
               </span>
             )}
@@ -202,13 +204,17 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
             <button
               type="button"
               onClick={onCancelar}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              aria-label="Cancelar criação ou edição de tarefa"
+              title="Cancelar e fechar formulário"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              aria-label="Salvar tarefa"
+              title="Salvar tarefa na lista"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               Salvar
             </button>

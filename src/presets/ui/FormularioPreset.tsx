@@ -179,12 +179,14 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
               type="text"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
+              aria-invalid={Boolean(erros.nome)}
+              aria-describedby={erros.nome ? "erro-nome-preset" : undefined}
               className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               placeholder="Ex: Estudo Intenso"
               required
             />
             {erros.nome && (
-              <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+              <span id="erro-nome-preset" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                 {erros.nome}
               </span>
             )}
@@ -202,11 +204,13 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 max="120"
                 value={tempoFoco}
                 onChange={(e) => setTempoFoco(Number(e.target.value))}
+                aria-invalid={Boolean(erros.tempoFocoMin)}
+                aria-describedby={erros.tempoFocoMin ? "erro-tempo-foco" : undefined}
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 required
               />
               {erros.tempoFocoMin && (
-                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+                <span id="erro-tempo-foco" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                   {erros.tempoFocoMin}
                 </span>
               )}
@@ -222,11 +226,13 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 max="60"
                 value={pausaCurta}
                 onChange={(e) => setPausaCurta(Number(e.target.value))}
+                aria-invalid={Boolean(erros.tempoPausaCurtaMin)}
+                aria-describedby={erros.tempoPausaCurtaMin ? "erro-pausa-curta" : undefined}
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 required
               />
               {erros.tempoPausaCurtaMin && (
-                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+                <span id="erro-pausa-curta" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                   {erros.tempoPausaCurtaMin}
                 </span>
               )}
@@ -245,11 +251,13 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 max="12"
                 value={ciclos}
                 onChange={(e) => setCiclos(Number(e.target.value))}
+                aria-invalid={Boolean(erros.ciclosAntesPausaLonga)}
+                aria-describedby={erros.ciclosAntesPausaLonga ? "erro-ciclos" : undefined}
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 required
               />
               {erros.ciclosAntesPausaLonga && (
-                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+                <span id="erro-ciclos" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                   {erros.ciclosAntesPausaLonga}
                 </span>
               )}
@@ -265,11 +273,13 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
                 max="60"
                 value={pausaLonga}
                 onChange={(e) => setPausaLonga(Number(e.target.value))}
+                aria-invalid={Boolean(erros.tempoPausaLongaMin)}
+                aria-describedby={erros.tempoPausaLongaMin ? "erro-pausa-longa" : undefined}
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2 text-sm focus:border-indigo-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 required
               />
               {erros.tempoPausaLongaMin && (
-                <span role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
+                <span id="erro-pausa-longa" role="alert" className="mt-1 block text-xs font-medium text-rose-600 dark:text-rose-400">
                   {erros.tempoPausaLongaMin}
                 </span>
               )}
@@ -280,13 +290,17 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
             <button
               type="button"
               onClick={onCancelar}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              aria-label="Cancelar edição"
+              title="Cancelar e fechar formulário"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              aria-label="Salvar temporizador"
+              title="Salvar alterações do temporizador"
+              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               Salvar
             </button>
