@@ -31,18 +31,18 @@ export const DialogoConfirmacao: React.FC<PropriedadesDialogoConfirmacao> = ({
       aria-describedby="dialogo-mensagem"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
     >
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-        <h2 id="dialogo-titulo" className="text-lg font-bold text-slate-900">
+      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-slate-900 dark:border dark:border-slate-800">
+        <h2 id="dialogo-titulo" className="text-lg font-bold text-slate-900 dark:text-slate-100">
           {titulo}
         </h2>
-        <p id="dialogo-mensagem" className="mt-2 text-sm text-slate-600">
+        <p id="dialogo-mensagem" className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           {mensagem}
         </p>
         <div className="mt-6 flex justify-end gap-3">
           <button
             type="button"
             onClick={onCancelar}
-            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             {textoCancelar}
           </button>

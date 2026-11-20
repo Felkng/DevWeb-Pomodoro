@@ -63,18 +63,18 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
   return (
     <section
       aria-label="Temporizador Pomodoro"
-      className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-sm text-center"
+      className="flex flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-sm text-center dark:bg-slate-900 dark:border dark:border-slate-800"
     >
       {sessaoFoiRetomada && estadoMaquina !== "ocioso" && (
         <div
           role="status"
-          className="mb-4 flex items-center justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900 w-full max-w-md"
+          className="mb-4 flex items-center justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200 w-full max-w-md"
         >
           <span>Sessão restaurada da sua última visita.</span>
           <button
             type="button"
             onClick={() => setModalAberto("descartar")}
-            className="font-bold underline hover:text-amber-950"
+            className="font-bold underline hover:text-amber-950 dark:hover:text-amber-100"
           >
             Descartar
           </button>
@@ -87,7 +87,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
         >
           Fase: {ROTULOS_FASE[faseAtual]}
         </span>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
           Ciclo {cicloAtual} de {totalCiclos}
         </span>
       </div>
@@ -95,7 +95,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
       <div
         role="timer"
         aria-live="polite"
-        className="my-8 text-7xl font-extrabold tracking-tight text-slate-800 sm:text-8xl"
+        className="my-8 text-7xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 sm:text-8xl"
       >
         {textoFormatado}
       </div>
@@ -114,7 +114,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={onPersonalizarTempos}
-                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition"
+                className="text-xs font-medium text-slate-500 hover:text-slate-800 hover:underline transition dark:text-slate-400 dark:hover:text-slate-200"
               >
                 Personalizar tempos
               </button>
@@ -134,21 +134,21 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <button
               type="button"
               onClick={onPularFase}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               Pular Fase
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("reiniciar")}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               Reiniciar Ciclos
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("encerrar")}
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition"
+              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60"
             >
               Encerrar
             </button>
@@ -156,7 +156,7 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
               <button
                 type="button"
                 onClick={() => setModalAberto("descartar")}
-                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition"
+                className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
               >
                 Descartar
               </button>
@@ -176,28 +176,28 @@ export const TemporizadorView: React.FC<PropriedadesTemporizadorView> = ({
             <button
               type="button"
               onClick={onPularFase}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               Pular Fase
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("reiniciar")}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               Reiniciar Ciclos
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("encerrar")}
-              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition"
+              className="rounded-xl bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-100 transition dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/60"
             >
               Encerrar
             </button>
             <button
               type="button"
               onClick={() => setModalAberto("descartar")}
-              className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition"
+              className="rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-500 hover:bg-slate-100 transition dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
             >
               Descartar
             </button>

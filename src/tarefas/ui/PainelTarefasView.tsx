@@ -46,21 +46,21 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
   return (
     <aside
       aria-labelledby="titulo-painel-tarefas"
-      className="flex flex-col rounded-2xl bg-white p-5 shadow-sm"
+      className="flex flex-col rounded-2xl bg-white p-5 shadow-sm dark:bg-slate-900 dark:border dark:border-slate-800"
     >
-      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
         <div>
-          <h2 id="titulo-painel-tarefas" className="text-base font-bold text-slate-800">
+          <h2 id="titulo-painel-tarefas" className="text-base font-bold text-slate-800 dark:text-slate-100">
             Tarefas de Estudo
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Ordenação automática por prioridade e estado
           </p>
         </div>
         <button
           type="button"
           onClick={onNovaTarefa}
-          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700"
+          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-700 shadow-sm transition"
         >
           + Adicionar
         </button>
@@ -68,7 +68,7 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
 
       <div className="mt-4 flex flex-col gap-2.5">
         {tarefas.length === 0 && (
-          <p className="py-6 text-center text-sm text-slate-400">
+          <p className="py-6 text-center text-sm text-slate-400 dark:text-slate-500">
             Nenhuma tarefa cadastrada. Adicione sua primeira tarefa!
           </p>
         )}
@@ -76,10 +76,10 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
         {tarefas.map((tarefa) => (
           <div
             key={tarefa.id}
-            className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/50 p-3"
+            className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/50 p-3 dark:border-slate-700 dark:bg-slate-800/80"
           >
             <div className="flex flex-col gap-1.5">
-              <span className="text-sm font-semibold text-slate-800">
+              <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">
                 {tarefa.titulo}
               </span>
               <div className="flex items-center gap-2 text-xs">
@@ -103,7 +103,7 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
                 aria-label={`Editar tarefa ${tarefa.titulo}`}
                 onClick={() => onEditarTarefa(tarefa)}
                 title="Editar Tarefa"
-                className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200"
+                className="rounded p-1.5 text-xs text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
               >
                 ✎
               </button>
@@ -113,7 +113,7 @@ export const PainelTarefasView: React.FC<PropriedadesPainelTarefasView> = ({
                 aria-label={`Excluir tarefa ${tarefa.titulo}`}
                 onClick={() => onExcluirTarefa(tarefa)}
                 title="Excluir Tarefa"
-                className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50"
+                className="rounded p-1.5 text-xs text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/40"
               >
                 ✕
               </button>
