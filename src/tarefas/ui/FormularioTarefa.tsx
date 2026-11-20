@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TarefaDto } from "../dominio/Tarefa";
 import {
   TituloTarefa,
@@ -52,6 +52,17 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
   const [estado, setEstado] = useState<TipoEstadoTarefa>(obterValorInicialEstado);
   const [prioridade, setPrioridade] = useState<TipoPrioridadeTarefa>(obterValorInicialPrioridade);
   const [erros, setErros] = useState<Record<string, string>>({});
+  const inputTituloRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!aberto) {
+      return;
+    }
+    const frameId = requestAnimationFrame(() => {
+      inputTituloRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [aberto]);
 
   useEffect(() => {
     if (!aberto) {
@@ -147,6 +158,7 @@ export const FormularioTarefa: React.FC<PropriedadesFormularioTarefa> = ({
               Título da tarefa (1 a 100 caracteres)
             </label>
             <input
+              ref={inputTituloRef}
               id="input-titulo-tarefa"
               type="text"
               value={titulo}

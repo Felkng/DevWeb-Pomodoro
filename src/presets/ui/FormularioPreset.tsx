@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PresetDto } from "../dominio/Preset";
 import {
   NomePreset,
@@ -70,6 +70,17 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
   const [ciclos, setCiclos] = useState(obterValorInicialCiclos);
   const [pausaLonga, setPausaLonga] = useState(obterValorInicialPausaLonga);
   const [erros, setErros] = useState<Record<string, string>>({});
+  const inputNomeRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!aberto) {
+      return;
+    }
+    const frameId = requestAnimationFrame(() => {
+      inputNomeRef.current?.focus();
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [aberto]);
 
   useEffect(() => {
     if (!aberto) {
@@ -175,6 +186,7 @@ export const FormularioPreset: React.FC<PropriedadesFormularioPreset> = ({
               Nome do temporizador (1 a 40 caracteres)
             </label>
             <input
+              ref={inputNomeRef}
               id="input-nome-preset"
               type="text"
               value={nome}
