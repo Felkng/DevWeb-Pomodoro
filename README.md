@@ -2,7 +2,7 @@
 
 Aplicação web moderna para gerenciamento de ciclos de foco e pausas baseada na técnica Pomodoro, voltada para estudantes que desejam estruturar e acompanhar suas sessões de estudo com eficiência.
 
-Projeto desenvolvido para a disciplina de **Desenvolvimento Web** (Projeto 2 / TCD).
+Projeto desenvolvido para a disciplina de **Desenvolvimento Web**.
 
 ---
 
